@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: SpringAiTraining
+
+  ai:
+    openai:
+      api-key: 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
+      base-url: https://openrouter.ai/api/v1
+
+      chat:
+        completions-path: /chat/completions
+        options:
+#          model: nvidia/nemotron-3-ultra-550b-a55b:free
+          model: nvidia/nemotron-3.5-lightning:free
+
+      embedding:
+        embeddings-path: /embeddings
+        options:
+          model: nvidia/nemotron-3-embed-1b:free
+
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 2048
+        index-type: NONE
+
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+            table-name: chat_memory
+
+  datasource:
+    url: jdbc:postgresql://localhost:5434/pg-vector
+    username: posgres
+    password: Root
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+logging:
+  level:
+    org.springframework.ai.chat.client: DEBUG
